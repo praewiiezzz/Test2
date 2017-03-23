@@ -1,0 +1,30 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    useLibrary 'org.apache.http.legacy'
+
+
+    defaultConfig {
+        applicationId "com.example.chuti.test"
+        minSdkVersion 21
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile files('libs/javax.servlet-3.0.0.v201112011016.jar')
+    compile files('libs/http-request-3.0.jar')
+    compile files('libs/httpclient-4.5.3.jar')
+    compile files('libs/httpcore-4.4.6.jar')
+}
