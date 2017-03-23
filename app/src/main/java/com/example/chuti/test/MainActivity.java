@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
             gg = 9;
             e.printStackTrace();
         }
-        ((TextView)findViewById(R.id.textView)).setText("Angle: " + gg);
+        ((TextView)findViewById(R.id.textView)).setText("Test = " + gg);
     }
 
     @Override
@@ -62,8 +62,8 @@ public class MainActivity extends Activity {
 
     public double sendGet()  {
 
-        String url = "http://192.168.1.20/status.cgi";
-     //   String url = "http://www.google.com";
+     //   String url = "http://192.168.1.20/status.cgi";
+        String url = "http://www.google.com";
 
         URL obj = null;
         try {
@@ -85,7 +85,7 @@ public class MainActivity extends Activity {
             e.printStackTrace();
         }
 
-        con.setRequestProperty("Cookie", "AIROS_SESSIONID=e02a09d3c8acda8237a374c103e5d940; path=/; domain=192.168.1.20; Expires=Tue Jan 19 2038 03:14:07 GMT+0700 (SE Asia Standard Time);");
+        //con.setRequestProperty("Cookie", "AIROS_SESSIONID=e02a09d3c8acda8237a374c103e5d940; path=/; domain=192.168.1.20; Expires=Tue Jan 19 2038 03:14:07 GMT+0700 (SE Asia Standard Time);");
 
         BufferedReader in = null;
         try {
@@ -116,7 +116,7 @@ public class MainActivity extends Activity {
         System.out.println("gg2");
    //     System.out.println(response.toString());
 
-        return 0;
+        return 1;
 
     }
 
