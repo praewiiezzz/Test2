@@ -12,6 +12,8 @@ import android.widget.TextView;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -70,6 +72,15 @@ public class MainActivity extends Activity {
         protected void onPostExecute(String result) {
             textView.setText(Html.fromHtml(result));
             Log.v("html", Html.fromHtml(result).toString());
+
+            try {
+                JSONObject jsonObj = new JSONObject(Html.fromHtml(result).toString());
+                System.out.println(jsonObj.getJSONObject("wireless").get("signal"));
+                System.out.println(jsonObj.getJSONObject("wireless").get("rssi"));
+                System.out.println(jsonObj.getJSONObject("wireless").get("noisef"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
