@@ -1,94 +1,94 @@
 package com.example.chuti.test;
 
 import android.app.Activity;
-import android.os.AsyncTask;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.Spanned;
-import android.util.Log;
-import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONException;
-import org.json.JSONObject;
+public class MainActivity extends Activity implements SensorEventListener {
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Timer;
-import java.util.TimerTask;
+    // define the display assembly compass picture
+    private ImageView image;
 
+    // record the compass picture angle turned
+    private float currentDegree = 0f;
 
-public class MainActivity extends Activity {
-    private TextView textView;
+    // device sensor manager
+    private SensorManager mSensorManager;
 
-    /** Called when the activity is first created. */
+    TextView tvHeading;
+
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        textView = (TextView) findViewById(R.id.TextView01);
 
-        //run every seconds
-        new Timer().scheduleAtFixedRate(new TimerTask() {
-            @Override public void run() {
-                readWebpage();
-            }
-        }, 0, 1000);
+        //
+        image = (ImageView) findViewById(R.id.imageViewCompass);
+
+        // TextView that will tell the user what degree is he heading
+        tvHeading = (TextView) findViewById(R.id.tvHeading);
+
+        // initialize your android device sensor capabilities
+        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
     }
 
-    private class DownloadWebPageTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... urls) {
-            String response = "";
-            for (String url : urls) {
-                DefaultHttpClient client = new DefaultHttpClient();
-                HttpGet httpGet = new HttpGet(url);
-                httpGet.setHeader("Cookie", "AIROS_SESSIONID=52fb8930fe14a09dc50e651f0fd87971; path=/; domain=192.168.1.20; Expires=Tue Jan 19 2038 03:14:07 GMT+0700 (SE Asia Standard Time);");
-                try {
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-                    HttpResponse execute = client.execute(httpGet);
-                    InputStream content = execute.getEntity().getContent();
-
-                    BufferedReader buffer = new BufferedReader(
-                            new InputStreamReader(content));
-                    String s = "";
-                    while ((s = buffer.readLine()) != null) {
-                        response += s;
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            return response;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            textView.setText(Html.fromHtml(result));
-            Log.v("html", Html.fromHtml(result).toString());
-
-            try {
-                JSONObject jsonObj = new JSONObject(Html.fromHtml(result).toString());
-                System.out.println(jsonObj.getJSONObject("wireless").get("signal"));
-                System.out.println(jsonObj.getJSONObject("wireless").get("rssi"));
-                System.out.println(jsonObj.getJSONObject("wireless").get("noisef"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
+        // for the system's orientation sensor registered listeners
+        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
+                SensorManager.SENSOR_DELAY_GAME);
     }
 
-    public void readWebpage () {
-        DownloadWebPageTask task = new DownloadWebPageTask();
-        task.execute("http://192.168.1.20/status.cgi");
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // to stop the listener and save battery
+        mSensorManager.unregisterListener(this);
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+        // get the angle around the z-axis rotated
+        float degree = Math.round(event.values[0]);
+        if( degree == 360)
+            degree = 0;
+
+
+        tvHeading.setText("Heading: " + Float.toString(degree) + " degrees");
+
+        // create a rotation animation (reverse turn degree degrees)
+        RotateAnimation ra = new RotateAnimation(
+                currentDegree,
+                -degree,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF,
+                0.5f);
+
+        // how long the animation will take place
+        ra.setDuration(210);
+
+        // set the animation after the end of the reservation status
+        ra.setFillAfter(true);
+
+        // Start the animation
+        image.startAnimation(ra);
+        currentDegree = -degree;
 
     }
 
-
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        // not in use
+    }
 }

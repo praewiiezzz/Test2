@@ -90,7 +90,11 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="javax.servlet-3.0.0.v201112011016" level="project" />
     <orderEntry type="library" exported="" name="http-request-3.0" level="project" />
+    <orderEntry type="library" exported="" name="commons-codec-1.10" level="project" />
     <orderEntry type="library" exported="" name="httpclient-4.5.3" level="project" />
     <orderEntry type="library" exported="" name="httpcore-4.4.6" level="project" />
+    <orderEntry type="library" exported="" name="commons-net-3.6" level="project" />
+    <orderEntry type="library" exported="" name="org.jbundle.util.osgi.wrapped.org.apache.http.client-4.1.2" level="project" />
+    <orderEntry type="library" exported="" name="org.apache.commons.httpclient" level="project" />
   </component>
 </module>
