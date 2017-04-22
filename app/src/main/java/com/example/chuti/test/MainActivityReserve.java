@@ -1,6 +1,5 @@
 package com.example.chuti.test;
 
-import android.animation.TypeConverter;
 import android.app.Activity;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -11,8 +10,8 @@ import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-public class MainActivity extends Activity implements SensorEventListener {
+// heading can rotate
+public class MainActivityReserve extends Activity implements SensorEventListener {
 
     // define the display assembly compass picture
     private ImageView image;
@@ -31,7 +30,7 @@ public class MainActivity extends Activity implements SensorEventListener {
         setContentView(R.layout.activity_main);
 
         //
-        image = (ImageView) findViewById(R.id.myImage);
+        image = (ImageView) findViewById(R.id.myImage  );
 
         // TextView that will tell the user what degree is he heading
         tvHeading = (TextView) findViewById(R.id.myImageViewText);
@@ -66,12 +65,12 @@ public class MainActivity extends Activity implements SensorEventListener {
             degree = 0;
 
 
-        tvHeading.setText(Integer.toString((int)degree) + "°");
+        tvHeading.setText("Heading: " + Float.toString(degree) + " degrees");
 
         // create a rotation animation (reverse turn degree degrees)
         RotateAnimation ra = new RotateAnimation(
-                -currentDegree,
-                degree,
+                currentDegree,
+                -degree,
                 Animation.RELATIVE_TO_SELF, 0.5f,
                 Animation.RELATIVE_TO_SELF,
                 0.5f);
