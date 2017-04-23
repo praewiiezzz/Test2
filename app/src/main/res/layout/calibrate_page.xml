@@ -1,0 +1,77 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativelayout"
+    android:padding="22dp"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ecf0f1">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Rotate your device to face "
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:id="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="#247ef7" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="of the north "
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:id="@+id/textView2"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:textColor="#247ef7" />
+
+    <TextView
+        android:id="@+id/tvHeading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:text="Heading: 0.0"
+        android:layout_below="@+id/textView2"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:id="@+id/compassNorth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/compass_north"
+        android:adjustViewBounds="true"
+        android:layout_marginTop="30dp"
+        android:maxWidth="70dp"
+        android:maxHeight="70dp"
+        android:layout_alignTop="@+id/tvHeading"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:id="@+id/smartphone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/smartphone"
+        android:adjustViewBounds="true"
+        android:layout_marginTop="20dp"
+        android:maxWidth="200dp"
+        android:maxHeight="200dp"
+        android:layout_below="@+id/compassNorth"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="35dp"
+        android:text="OK"
+        android:id="@+id/okButton"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="#ffffff"
+        android:background="#2ee477" />
+
+
+
+</RelativeLayout>
