@@ -8,6 +8,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -33,7 +34,7 @@ public class Calibrate extends Activity implements SensorEventListener {
         // TextView that will tell the user what degree is he heading
         tvHeading = (TextView) findViewById(R.id.tvHeading);
         mButton = (Button)findViewById(R.id.okButton);
-
+        receiveValue();
         // initialize your android device sensor capabilities
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
@@ -92,7 +93,7 @@ public class Calibrate extends Activity implements SensorEventListener {
         //Passing value from Distance.java
 
         Intent intent = new Intent(Calibrate.this, Rotate.class);
-        intent.putExtra("headingVal", String.valueOf(currentDegree));
+        intent.putExtra("CalibrateVal", String.valueOf(currentDegree)); //want to sent -degree
         startActivity(intent);
     }
     public void showErrorMessage(CharSequence text){
@@ -100,6 +101,12 @@ public class Calibrate extends Activity implements SensorEventListener {
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
+    }
+
+    public void receiveValue()
+    {
+        double heading = Double.valueOf(getIntent().getStringExtra("CurrentHeading"));
+        Log.v("Current heading", String.valueOf(heading));
     }
 
 }
