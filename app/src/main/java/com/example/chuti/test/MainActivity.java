@@ -1,21 +1,24 @@
 package com.example.chuti.test;
 
-import android.animation.TypeConverter;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+// heading can rotate
 public class MainActivity extends Activity implements SensorEventListener {
-
-    // define the display assembly compass picture
-    private ImageView image;
 
     // record the compass picture angle turned
     private float currentDegree = 0f;
@@ -24,20 +27,32 @@ public class MainActivity extends Activity implements SensorEventListener {
     private SensorManager mSensorManager;
 
     TextView tvHeading;
+    Button mButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //
-        image = (ImageView) findViewById(R.id.rotateImage);
-
+        
         // TextView that will tell the user what degree is he heading
-        tvHeading = (TextView) findViewById(R.id.Heading);
+        tvHeading = (TextView) findViewById(R.id.tvHeading);
+        mButton = (Button)findViewById(R.id.okButton);
 
         // initialize your android device sensor capabilities
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+
+        mButton.setOnClickListener(
+                new View.OnClickListener() {
+                    public void onClick(View view) {
+                        // Call Next page
+                        try {
+                            passingValueAndCallNextPage();
+                        } catch (Exception e) {
+                            showErrorMessage("An error occured, please try again later.");
+
+                        }
+                    }
+                });
     }
 
     @Override
@@ -62,34 +77,11 @@ public class MainActivity extends Activity implements SensorEventListener {
 
         // get the angle around the z-axis rotated
         float degree = Math.round(event.values[0]);
-        if( degree == 360 || degree == 0)
-        {
+        if( degree == 360)
             degree = 0;
-            image.setImageResource(R.drawable.counterclockwise_green);
-        }
-        else
-            image.setImageResource(R.drawable.counterclockwise_yellow);
 
 
-
-        tvHeading.setText(Integer.toString((int)degree) + "°");
-
-        // create a rotation animation (reverse turn degree degrees)
-        RotateAnimation ra = new RotateAnimation(
-                -currentDegree,
-                degree,
-                Animation.RELATIVE_TO_SELF, 0.5f,
-                Animation.RELATIVE_TO_SELF,
-                0.5f);
-
-        // how long the animation will take place
-        ra.setDuration(210);
-
-        // set the animation after the end of the reservation status
-        ra.setFillAfter(true);
-
-        // Start the animation
-        image.startAnimation(ra);
+        tvHeading.setText("Heading: " + Float.toString(degree) + " degrees");
         currentDegree = -degree;
 
     }
@@ -98,4 +90,19 @@ public class MainActivity extends Activity implements SensorEventListener {
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         // not in use
     }
+
+    public void passingValueAndCallNextPage(){
+        //Passing value from Distance.java
+
+        Intent intent = new Intent(MainActivity.this, Calibrate.class);
+        intent.putExtra("CurrentHeading",String.valueOf(-currentDegree)); // currentDegree = -degree want to send degree
+        startActivity(intent);
+    }
+        public void showErrorMessage(CharSequence text){
+        Context context = getApplicationContext();
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+    }
+
 }

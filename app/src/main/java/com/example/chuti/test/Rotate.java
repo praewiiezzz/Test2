@@ -104,8 +104,8 @@ public class Rotate extends Activity implements SensorEventListener {
 
         public void receiveValue()
         {
-            double heading = Double.valueOf(getIntent().getStringExtra("headingVal"));
-            Log.v("heading", String.valueOf(heading));
+            double calibrate = Double.valueOf(getIntent().getStringExtra("CalibrateVal"));
+            Log.v("Calibrate value", String.valueOf(calibrate));
         }
 }
 
