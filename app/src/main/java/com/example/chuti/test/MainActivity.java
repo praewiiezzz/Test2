@@ -61,7 +61,7 @@ public class MainActivity extends Activity implements SensorEventListener {
     public void onSensorChanged(SensorEvent event) {
 
         // get the angle around the z-axis rotated
-        float degree = Math.round(event.values[1]);
+        float degree = Math.round(event.values[0]);
         if( degree == 360 || degree == 0)
         {
             degree = 0;
@@ -72,7 +72,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 
 
 
-        tvHeading.setText(Integer.toString((int)-degree) + "°");
+        tvHeading.setText(Integer.toString((int)degree) + "°");
 
         // create a rotation animation (reverse turn degree degrees)
         RotateAnimation ra = new RotateAnimation(
