@@ -31,10 +31,10 @@ public class MainActivity extends Activity implements SensorEventListener {
         setContentView(R.layout.activity_main);
 
         //
-        image = (ImageView) findViewById(R.id.myImage);
+        image = (ImageView) findViewById(R.id.rotateImage);
 
         // TextView that will tell the user what degree is he heading
-        tvHeading = (TextView) findViewById(R.id.myImageViewText);
+        tvHeading = (TextView) findViewById(R.id.Heading);
 
         // initialize your android device sensor capabilities
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -61,12 +61,18 @@ public class MainActivity extends Activity implements SensorEventListener {
     public void onSensorChanged(SensorEvent event) {
 
         // get the angle around the z-axis rotated
-        float degree = Math.round(event.values[0]);
-        if( degree == 360)
+        float degree = Math.round(event.values[1]);
+        if( degree == 360 || degree == 0)
+        {
             degree = 0;
+            image.setImageResource(R.drawable.counterclockwise_green);
+        }
+        else
+            image.setImageResource(R.drawable.counterclockwise_yellow);
 
 
-        tvHeading.setText(Integer.toString((int)degree) + "°");
+
+        tvHeading.setText(Integer.toString((int)-degree) + "°");
 
         // create a rotation animation (reverse turn degree degrees)
         RotateAnimation ra = new RotateAnimation(
