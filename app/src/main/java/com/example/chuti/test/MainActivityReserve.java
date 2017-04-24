@@ -30,10 +30,10 @@ public class MainActivityReserve extends Activity implements SensorEventListener
         setContentView(R.layout.activity_main);
 
         //
-        image = (ImageView) findViewById(R.id.myImage  );
+        image = (ImageView) findViewById(R.id.rotateImage );
 
         // TextView that will tell the user what degree is he heading
-        tvHeading = (TextView) findViewById(R.id.myImageViewText);
+        tvHeading = (TextView) findViewById(R.id.Heading);
 
         // initialize your android device sensor capabilities
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
