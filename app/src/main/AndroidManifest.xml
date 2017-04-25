@@ -23,6 +23,9 @@
         <activity android:name=".Calibrate"
             android:label="Calibrate the compass"
             />
+        <activity android:name=".Heading"
+            android:label="Installation"
+            />
     </application>
 
 </manifest>

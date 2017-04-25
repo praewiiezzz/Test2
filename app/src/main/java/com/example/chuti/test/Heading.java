@@ -1,25 +1,33 @@
 package com.example.chuti.test;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 // heading can rotate
-public class Calibrate extends Activity implements SensorEventListener {
+public class Heading extends Activity implements SensorEventListener {
 
     // record the compass picture angle turned
-    private float currentDegree = 0f;
-    private float degree = 0f;
+    private double calibrate = 0;
+    private double realHeading = 0;
 
     // device sensor manager
     private SensorManager mSensorManager;
@@ -30,12 +38,14 @@ public class Calibrate extends Activity implements SensorEventListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.calibrate_page);
+        setContentView(R.layout.activity_main);
+
+        receiveValue();
 
         // TextView that will tell the user what degree is he heading
         tvHeading = (TextView) findViewById(R.id.tvHeading);
         mButton = (Button)findViewById(R.id.okButton);
-       // receiveValue();
+
         // initialize your android device sensor capabilities
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
@@ -74,14 +84,10 @@ public class Calibrate extends Activity implements SensorEventListener {
     public void onSensorChanged(SensorEvent event) {
 
         // get the angle around the z-axis rotated
-        degree = Math.round(event.values[0]);
-        if( degree == 360)
-            degree = 0;
-
-
+        float degree = Math.round(event.values[0]);
+        degree = calibrateDegree(degree);
+        realHeading = degree;
         tvHeading.setText("Heading: " + Float.toString(degree) + " degrees");
-
-        currentDegree = -degree;
 
     }
 
@@ -93,8 +99,10 @@ public class Calibrate extends Activity implements SensorEventListener {
     public void passingValueAndCallNextPage(){
         //Passing value from Distance.java
 
-        Intent intent = new Intent(Calibrate.this, Heading.class);
-        intent.putExtra("CalibrateVal", String.valueOf(degree)); //want to sent -degree
+        Intent intent = new Intent(Heading.this, Rotate.class);
+        intent.putExtra("CurrentHeading",String.valueOf(realHeading)); // currentDegree = -degree want to send degree
+        intent.putExtra("CalibrateVal", String.valueOf(calibrate));
+        System.out.println("CurrentHeading " + realHeading);
         startActivity(intent);
     }
     public void showErrorMessage(CharSequence text){
@@ -104,10 +112,23 @@ public class Calibrate extends Activity implements SensorEventListener {
         toast.show();
     }
 
-   /* public void receiveValue()
+    public void receiveValue()
     {
-        double heading = Double.valueOf(getIntent().getStringExtra("CurrentHeading"));
-        Log.v("Current heading", String.valueOf(heading));
-    }*/
+        calibrate = Double.valueOf(getIntent().getStringExtra("CalibrateVal"));
+        Log.v("Calibrate value fc", String.valueOf(calibrate));
+    }
 
+    public float calibrateDegree(float degree)
+    {
+        if(degree < 360)
+        {
+            degree = degree +(360-(float)calibrate);
+            degree %=360;
+        }
+        else if( degree == 360)
+        {
+            degree = degree-(float)calibrate;
+        }
+        return degree;
+    }
 }
