@@ -20,7 +20,6 @@ public class Rotate extends Activity implements SensorEventListener {
         // define the display assembly compass picture
         private ImageView image;
         private double calibrate;
-        private double Heading;
         private double heading;
         // record the compass picture angle turned
         private float currentDegree = 0f;
@@ -129,18 +128,18 @@ public class Rotate extends Activity implements SensorEventListener {
         public void receiveValue()
         {
             calibrate = Double.valueOf(getIntent().getStringExtra("CalibrateVal"));
-            Heading = Double.valueOf(getIntent().getStringExtra("CurrentHeading"));
+            heading = Double.valueOf(getIntent().getStringExtra("CurrentHeading"));
             Log.v("Calibrate value 2", String.valueOf(calibrate));
-            Log.v("oldHeading 2", String.valueOf(Heading));
+            Log.v("oldHeading 2", String.valueOf(heading));
         }
 
 
     //public void calDegree(double latA, double latB,double lonA,double lonB,double an,double bn,double z)
     public void calDegree(double latA, double latB,double lonA,double lonB,double z)
     {
-        double an = Heading;
+        double an = heading;  // angle from a to North
         System.out.println("an"+an);
-        double a = 0;
+        double a = 0; // angle from a to right derection
         double pi = 180;
         System.out.println("z: "+z);
         if(latA > latB && lonA > lonB)
